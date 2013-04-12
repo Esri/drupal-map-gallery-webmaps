@@ -47,5 +47,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 A copy of the license is available in the repository's [license.txt]( https://raw.github.com/Esri/drupal-map-gallery-webmaps/master/license.txt) file.
 
-[](Esri Tags: ArcGIS Map Gallery Group)
-[](Esri Language: JavaScript)
+[](Esri Tags: ArcGIS ArcGIS-Online Map Gallery Group Drupal Government Webmap)
+[](Esri Language: JavaScript REST-API)
