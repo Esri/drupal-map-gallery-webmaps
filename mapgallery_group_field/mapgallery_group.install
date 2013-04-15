@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * 
+ * HOOK_field_schema
+ * 
+ * Sets up the database schema
+ */
+function mapgallery_group_field_schema($field) {
+	
+  $columns = array(
+    'ags_groupid' => array('type' => 'varchar', 'length' => 64, 'not null' => FALSE),
+    'ags_token' => array('type' => 'varchar', 'length' => 256, 'not null' => FALSE),
+    'ags_showmap_onpage' => array('type' => 'int', 'length' => 64, 'not null' => FALSE),
+    
+  );
+  $indexes = array(
+    'ags_groupid' => array('ags_groupid'),
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes,
+  );
+  
+	
+}

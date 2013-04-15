@@ -1,0 +1,274 @@
+ ::-moz-selection{
+    background-color:Transparent;
+    color:#000;
+    }
+
+::selection {
+    background-color:Transparent;
+    color:#000;
+}
+.carouselParent::-moz-selection,
+.carouselParent::selection { ... }
+
+.carouselParent a {
+ 
+   outline: 0;
+
+}
+
+.esriMapTitleBar {
+  background-color: #333333;
+  color: #ECF1E3;
+  height: 20px;
+  padding: 7px 3px 15px 10px;
+  text-align: left;
+}
+
+.galleryThumbnail {
+    background: url("http://d3w50ib5d2uy0g.cloudfront.net/cdn/2265A/css/esri/../../js/esri/arcgisonline/css/images/arcgis-transparent-background-div.png") no-repeat scroll left top transparent;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    padding: 5px;
+	box-shadow: 0px 0px 7px #000000!important;
+}
+
+.galleryThumbnailHighlight {
+  box-shadow: 0px 0px 7px #007ACC!important;
+}
+
+.carouselParent {
+  background: #EEEEEE;
+}
+
+.map-nav {
+  visibility: hidden;
+}
+
+.carousel a {
+	text-decoration: none !important;
+}
+
+.carousel img {
+	box-shadow: none !important;
+	max-width: 250px !important;
+}
+
+.featuredMapsCarousel img {
+  max-width: 180px !important;
+}
+
+.featuredMapsCarousel table td, .featuredMapsCarousel table th  { 
+	border: 0 none !important;
+	;
+}
+	
+.featuredMapsCarousel #fHeader h2 {
+	color: #000000;
+	font-size: 18px;
+	margin-top: 0;
+	padding: 8px 0 0 15px;
+}
+
+.featuredMapsCarousel #fHeader  
+{
+    /* 
+          background: -moz-linear-gradient(center top , #EDEDEA 0%, #E8E8E5 100%) repeat scroll 0 0 transparent;
+          border-bottom: 1px solid #CCCCCC;
+          border-radius: 10px 10px 0 0;
+    */
+	height: 35px;
+	margin-bottom: 8px;
+}
+
+.esriLargeSlider {
+	
+  width: 30px;	
+  border: 0px none !important;
+}
+
+.esriLargeSlider tbody {
+	
+	border: 0px none !important;
+}
+
+.featuredMapsCarousel { /*
+  background: -moz-linear-gradient(center top , #F5F5F1 0%, #E8E8E5 100%) repeat scroll 0 0 transparent;
+  border-bottom: 1px solid #B3B3B3;
+  border-radius: 10px 10px 10px 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  
+  background: white;*/
+	margin: 0 0 18px;
+	padding: 0;
+	height: 200px;
+}
+
+#content div.col3 div.content p {
+	margin-top: 0em;
+}
+
+#page-border #content div.col3 div.content {
+	margin: -10px 15px 0 15px;
+}
+
+#page-border #content div.col3 div.content h1 {
+	margin-bottom: 0.25em;
+}
+
+.content h1 a,.content h1 a:active,.content h1 a:hover,.content h1 a:visited
+	{
+	color: #024672;
+	font-style: normal !important;
+	text-decoration: none;
+}
+
+.content a:hover {
+	text-decoration: underline;
+}
+
+.rounded {
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+#mainLayoutWindow {
+	border-right: solid 1px black;
+	border-left: solid 1px black;
+}
+
+#welcomePane {
+	margin-bottom: 5px;
+}
+
+.previewNode {
+	margin: 10px;
+	padding: 10px;
+	cursor: pointer;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	width:200px;
+}
+
+.itemLabel {
+	color: #000FC2;
+	padding-top: 5px;
+	font-size: 12px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+	
+}
+
+.itemLabelHighlight {
+  font-weight: bolder;
+}
+
+.itemLabel a {
+	text-decoration: none;
+}
+
+.scrollPaneParent { /* width: 860px; */
+	height: 200px;
+}
+
+.scrollPaneParentgroup {
+	width: 650px;
+	height: 125px;
+}
+
+#featuredPane {
+	color: #6e744e;
+	margin: 5px 0px 0px 20px;
+}
+
+#featuredPane2 {
+	color: #6e744e;
+	margin: 5px 0px 0px 20px;
+	position: relative;
+	left: 600px;
+	overflow: auto;
+}
+
+#featuredPane h2,#videoText h2 {
+	color: #0b57ad;
+	margin-top: -3px;
+	margin-bottom: 5px;
+}
+
+#featuredPane td img {
+	width: 100px;
+	height: 60px;
+}
+
+.scroll {
+	height: 80px;
+	width: 44px;
+	position: relative;
+}
+
+.scrollDisabled {
+	background-position: 0 -94px;
+}
+
+.scroll:hover {
+	background-position: 0 -188px;
+	cursor: pointer;
+}
+
+.scrollPrev {
+	background-image: url('../images/galleryprev.png');
+	left: 0px;
+	bottom: 155px;
+}
+
+.scrollNext {
+	background-image: url('../images/gallerynext.png');
+	float: right;
+	bottom: 240px;
+}
+
+.scrollContent {
+	position: relative;
+}
+/*
+        The following zoom:1 rule is specifically for IE6 + IE7.
+        Move to separate stylesheet if invalid CSS is a problem.
+      */
+.clearfix {
+	zoom: 1;
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+.clearfix:before,.clearfix:after {
+	content: " ";
+	display: block;
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+}
+
+.clearfix:before,.clearfix:after {
+	content: " ";
+	display: block;
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+}
+
+.dijitContentPane {
+	display: block;
+	overflow: hidden !important;
+}
+
+.esriAgsSearchDialog .dgrid-row {
+  border: 1px #CCCCCC;
+  cursor: pointer;
+}

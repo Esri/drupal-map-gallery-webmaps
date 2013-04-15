@@ -1,0 +1,350 @@
+<?php
+
+
+
+/**
+ * Implements hook_menu().
+ *
+ * @see hook_menu()
+ * @see menu_example
+ */
+function mapgallery_group_menu() {
+
+  // Webmap Page with simple map template /map/<groupid>/<mapid>
+  $items['mapgallery_group/arcgis/map/%/%'] = array(
+    'title' => 'View Map',
+    'page callback' => 'mapgallery_group_map_page',
+    'access arguments' => array (
+			'access content'
+	),
+    'page arguments' => array(3,4),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Constructs a simple webmap page.
+ */
+function mapgallery_group_map_page($groupID, $mapID) {
+  // $mapID = id for the map to show
+  
+  /*// Ensure the $groupID and $mapID are actual id's.
+  if (!is_agolid($groupID) || !is_agolid($mapID)) {
+    // show a standard "access denied" page in this case.
+    drupal_access_denied();
+    return;  // We actually don't get here.
+  }
+  */
+  
+  // get paths
+  
+  $modulePath = $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'mapgallery_group');
+  $build['xyz'] = array(
+    '#theme' => 'mapgallery_map',
+    '#title' => '',
+    '#groupID' => $groupID,
+    '#mapID' => $mapID
+  );
+  $build['mapgallery_map']['#attached']['library'][] = array('system', 'ui.mapBody');
+  
+  // insert a call to a function
+  $build['mapgallery_map']['#attached']['js'][] = array('data' => '(function($){$(function() { setConfigOptions(\'' . $groupID . '\', \'' . $mapID . '\', \'' . $modulePath . '\'); })})(jQuery);', 'type' => 'inline');
+  $output = drupal_render($build);
+
+  return $output;
+}
+ 
+/**
+ * HOOK_field_info
+ * 
+ * Implements mapgallery_field_info().
+ */
+function mapgallery_group_field_info() {
+  return array(
+    'mapgallery_group' => array(
+      'label' => t('ArcGIS Mapgallery Field'),
+      'description' => t('ArcGIS Group id field that will render a gallery or thumbnail'),
+      'default_widget' => 'mapgallery_group_dialog_widget',
+      'default_formatter' => 'mapgallery_group_thumb_formatter',
+      'settings' => array (
+            'ags_url' => 'http://www.arcgis.com', 
+       )
+    ),
+  );
+}
+
+/**
+ * 
+ */
+function mapgallery_group_theme() {
+	return array (
+		'mapgallery_carousel' => array (
+			'template' => 'mapgallery_carousel',
+			'variables' => array(
+              'item' => NULL, 
+              'groupID' => '69b91f7b857b40a484c4aacbd1b243a7', 
+              'randPrefix' => 1,
+              'ags_url' => 'http://www.arcgis.com',
+              'show_map_on_page' => 1,
+              'token' => NULL)
+		),
+		'mapgallery_grid' => array (
+			'template' => 'mapgallery_grid',
+			'variables' => array(
+              'item' => NULL, 
+              'groupID' => '69b91f7b857b40a484c4aacbd1b243a7', 
+              'randPrefix' => 1,
+              'ags_url' => 'http://www.arcgis.com')
+		),
+		'mapgallery_map' => array(
+            'template' => 'map',
+            'variables' => array(
+              'title' => NULL, 
+              'groupID' => '69b91f7b857b40a484c4aacbd1b243a7', 
+              'mapID' => '085648dddb0e41baa898b5e0b3afc902',
+              'ags_url' => 'http://www.arcgis.com')
+        ),
+	);
+}
+ 
+ 
+/**
+ * Implements hook_field_formatter_info().
+ */
+function mapgallery_group_field_formatter_info() {
+  return array(
+      'mapgallery_group_thumb_formatter' => array(
+          'label' => t('Map Gallery in carousel format'),
+          'field types' => array('mapgallery_group'),
+          
+      ),
+      'mapgallery_group_grid_formatter' => array(
+          'label' => t('Map Gallery in grid format'),
+          'field types' => array('mapgallery_group'),
+          
+      ),
+  );
+}
+
+/**
+ * Field instance settings to be set by Content Type structure administrator
+ * 
+ */
+function mapgallery_group_field_settings_form(
+  $field, $instance, $has_data) {
+  $settings = $field['settings'];
+
+  //Initialize the element variable
+  $element = array();
+  $element['ags_url'] = array(
+    '#type'           => 'textfield',                        // Use a textbox
+    '#title'          => t('ArcGIS URL'),                      // Widget label
+    '#description'    => t('ArcGIS.com or ArcGIS.com Subscrion or Portal for ArcGIS URL.'),  // helper text
+    '#default_value' => $settings['ags_url'],              // Get the value if it's already been set
+  );
+  
+  return $element;	
+}
+
+/**
+ * HOOK_field_formatter_settings_summary
+ */
+function mapgallery_group_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $summary = t('Using @ags_url as url to connect to', array(
+    '@ags_url'     => $settings['ags_url'],
+    /*'@tooltip'  => $settings['tooltip'],*/
+  )); // we use t() for translation and placeholders to guard against attacks
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function mapgallery_group_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+
+ 
+  $element = array();
+ 
+  $settings = $field['settings']; 
+  $ags_url = $settings['ags_url'];
+ 
+
+  switch ($display['type']) {
+    case 'mapgallery_group_thumb_formatter':
+      
+       foreach ($items as $delta => $item) {
+       	   
+          if ($item['ags_groupid']) {
+            
+                $element[$delta] = array(
+                   '#theme' => 'mapgallery_carousel',
+                   '#item' => $item,
+                   '#randPrefix' => rand(),
+                   '#ags_url' => $ags_url
+                 );
+           } 
+     }
+     break;
+     case 'mapgallery_group_grid_formatter':
+       
+       foreach ($items as $delta => $item) {
+          if ($item['ags_groupid']) {
+               
+                $element[$delta] = array(
+                   '#theme' => 'mapgallery_grid',
+                   '#item' => $item,
+                   '#randPrefix' => rand(),
+                   '#ags_url' => $ags_url
+                 );
+           } 
+     }
+     break;
+  }
+  return $element;
+}
+
+/**
+ * HOOK_field_widget_info
+ * 
+ * Widget that the field should use for the publisher/author user
+ * 
+ */
+function mapgallery_group_field_widget_info() {
+  return array(   
+   
+    'mapgallery_group_dialog_widget' => array(  
+      // Our widget will be named textf label.
+      'label' => t('Group Id Dialog Widget'),  
+      // Our widget will work with a field in DB under the name textf.
+      'field types' => array('mapgallery_group'),  
+    ),
+  ); 
+}
+
+/**
+ * HOOK_field_widget_form
+ * 
+ * Renders the form that the publisher/author sees
+ */
+
+function mapgallery_group_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $value = isset($items[$delta]['ags_groupid']) ? $items[$delta]['ags_groupid'] : '';
+  $widget = $instance['widget'];
+  $settings = $widget['settings'];
+
+  //$process = array_merge($fieldset_info['#process'], array('poutine_maker_ignore_parent'));
+  $widget = $element;
+  $widget['#delta'] = $delta;
+  $rand = rand();
+  $widget += array (
+    '#type' => 'fieldset',
+    '#title' => t('ArcGIS Group ID'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,  
+   
+    //'#process' => $process
+  );
+  switch ($instance['widget']['type']) {
+
+    case 'mapgallery_group_dialog_widget':
+    
+      $html_frag_url = $GLOBALS['base_url'].'/'. drupal_get_path('module', 'mapgallery_group') . '/../common/group_search_fragment.html';
+      //$html_frag_url = str_replace('//', '/', $html_frag_url);
+      $widget['dialog_widget']= array(
+        '#prefix' => '<div class="arcgis-group-dialog">' .
+                '<a href="javascript:void(0)" onclick="initSearchGroup(\''.$field['settings']['ags_url'].'\', this, false);return false;">' .
+                'Search in '.$field['settings']['ags_url'].'</a>'.
+        		'</div>',
+        '#attributes' => array('class' => array('arcgis-group-dialog')),
+        '#attached' => array(
+           'js' => array(
+              'var dojoConfig = { async: true, isDebug: true };' => array( 'type' => 'inline'),
+              'http://serverapi.arcgisonline.com/jsapi/arcgis/3.3',
+              drupal_get_path('module', 'mapgallery_group') . '/../common/js/arcgisSearch.js',
+              'var agsGidHtmlFrag = "'.$html_frag_url.'"' => array( 'type' => 'inline')),
+              
+           'css' => array(
+             //'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dojo/dojo/resources/dojo.css'=> array('group' => CSS_THEME, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dgrid/css/dgrid.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dgrid/css/skins/claro.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/esri/css/esri.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'), 
+             $GLOBALS['base_url'].'/'. drupal_get_path('module', 'mapgallery_group') .'/../common/css/agsSearch.css' => array('group' => CSS_DEFAULT, 'type' => 'external')
+           )
+        ),
+        //'#markup' => '<input type="button" value=="Search For Group"></input>',
+      );
+      //break
+    case 'mapgallery_group_text_widget':
+      $widget['ags_groupid'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Group ID') ,
+        '#default_value' => isset($items[$delta]['ags_groupid']) ? $items[$delta]['ags_groupid'] : '',
+        '#delta' => $delta, 
+        // Allow a slightly larger size that the field length to allow for some
+        // configurations where all characters won't fit in input field.
+        '#size' => 64,
+        '#description' => 'Add the group id here or search and click on the group using the link above.',
+        '#maxlength' => 64,
+      );
+      $widget['ags_token'] = array(
+        '#type' => 'hidden',
+        '#title' => t('Token'),
+        '#default_value' => isset($items[$delta]['ags_token']) ? $items[$delta]['ags_token'] : '',
+        '#delta' => $delta, 
+        // Allow a slightly larger size that the field length to allow for some
+        // configurations where all characters won't fit in input field.
+        '#size' => 128,
+        '#maxlength' => 256,
+      );
+      if($instance['display']['default']['type'] == 'mapgallery_group_thumb_formatter') {
+	      $widget['ags_showmap_onpage'] = array(
+		      '#type' => 'checkbox',
+			  '#title' => t('Show Map on Page'),
+			  '#description' => t('Loads Webmaps on the same page as the carousel. Otherwise Webmaps will be opened in a new page'),
+			  '#default_value' => isset($items[$delta]['ags_showmap_onpage']) ? $items[$delta]['ags_showmap_onpage'] : '',
+					  '#delta' => $delta, 
+					  // Allow a slightly larger size that the field length to allow for some
+					  // configurations where all characters won't fit in input field.
+					  '#size' => 64,
+					  '#maxlength' => 64,
+	      );
+      }
+      break;
+
+   
+
+  }
+  
+  return $widget;
+}
+
+
+/**
+ * Utility method to recusively search an array
+ */
+function mapgallery_group_recursive_array_search($needle,$haystack) {
+    foreach($haystack as $key=>$value) {
+        $current_key=$key;
+        if($needle===$value OR (is_array($value) && mapgallery_group_recursive_array_search($needle,$value) !== false)) {
+            return $current_key;
+        }
+    }
+    return false;
+}
+
+/**
+ * Hook. Signals drupal if field is empty.  If empty then field will
+ * not be rendered.
+ */
+function mapgallery_group_field_is_empty($item, $field) {
+
+ if(empty($item['ags_groupid']) == TRUE) {
+ 	return TRUE;
+ }
+ return FALSE;
+}

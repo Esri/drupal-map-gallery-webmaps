@@ -1,0 +1,15 @@
+
+.esriMapField {
+  width: 100%;
+  height: 300px;
+
+}
+
+.field-label, #map {
+  display: none;
+  visibility: hidden;
+}
+
+#map-panel {
+  margin-bottom: 0px !important;
+}

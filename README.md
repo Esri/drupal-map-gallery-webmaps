@@ -10,8 +10,8 @@ Drupal module that enables you to display content from ArcGIS.com, ArcGIS.com Su
 
 1. Fork and then clone the repo or download the .zip file. 
 2. Load the module to your Drupal site (package: ArcGIS Modules).
-3. Add the ArcGIS field to a page structure, configuring it.
-4. Create a page using the ArcGIS field
+3. Add the ArcGIS field to a page/content type structure, and configure it.
+4. Create a page/content type using the ArcGIS field
 5. In Edit mode, configure the field
 
 ## Requirements

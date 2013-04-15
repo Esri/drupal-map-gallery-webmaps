@@ -1,0 +1,249 @@
+<?php
+
+
+
+ 
+/**
+ * HOOK_field_info
+ * 
+ * Implements mapgallery_field_info().
+ */
+function webmap_field_info() {
+  return array(
+    'webmap' => array(
+      'label' => t('ArcGIS Webmap Field'),
+      'description' => t('ArcGIS Webmap id field that will render a webmap'),
+      'default_widget' => 'webmap_dialog_widget',
+      'default_formatter' => 'webmap_formatter',
+      'settings' => array (
+            'ags_url' => 'http://www.arcgis.com', 
+       )
+    ),
+  );
+}
+
+/**
+ * 
+ */
+function webmap_theme() {
+	return array (
+		'webmap' => array (
+			'template' => 'webmap',
+			'variables' => array(
+              'item' => NULL, 
+              'webmap_id' => '69b91f7b857b40a484c4aacbd1b243a7', 
+              'randPrefix' => 1,
+              'ags_url' => 'http://www.arcgis.com',
+              'token' => NULL)
+		)
+	);
+}
+ 
+ 
+/**
+ * Implements hook_field_formatter_info().
+ */
+function webmap_field_formatter_info() {
+  return array(
+      'webmap_formatter' => array(
+          'label' => t('Webmap'),
+          'field types' => array('webmap'),
+          
+      )
+  );
+}
+
+/**
+ * Field instance settings to be set by Content Type structure administrator
+ * 
+ */
+function webmap_field_settings_form(
+  $field, $instance, $has_data) {
+  $settings = $field['settings'];
+
+  //Initialize the element variable
+  $element = array();
+  $element['ags_url'] = array(
+    '#type'           => 'textfield',                        // Use a textbox
+    '#title'          => t('ArcGIS URL'),                      // Widget label
+    '#description'    => t('ArcGIS.com or ArcGIS.com Subscrion or Portal for ArcGIS URL.'),  // helper text
+    '#default_value' => $settings['ags_url'],              // Get the value if it's already been set
+  );
+  
+  return $element;	
+}
+
+/**
+ * HOOK_field_formatter_settings_summary
+ */
+function webmap_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $summary = t('Using @ags_url as url to connect to', array(
+    '@ags_url'     => $settings['ags_url'],
+    /*'@tooltip'  => $settings['tooltip'],*/
+  )); // we use t() for translation and placeholders to guard against attacks
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function webmap_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+
+ 
+  $element = array();
+ 
+  $settings = $field['settings']; 
+  $ags_url = $settings['ags_url'];
+ 
+
+  switch ($display['type']) {
+    case 'webmap_formatter':
+      
+       foreach ($items as $delta => $item) {
+       	   
+          if ($item['ags_webmapid']) {
+            
+                $element[$delta] = array(
+                   '#theme' => 'webmap',
+                   '#item' => $item,
+                   '#randPrefix' => rand(),
+                   '#ags_url' => $ags_url
+                 );
+           } 
+     }
+    
+  }
+  return $element;
+}
+
+/**
+ * HOOK_field_widget_info
+ * 
+ * Widget that the field should use for the publisher/author user
+ * 
+ */
+function webmap_field_widget_info() {
+  return array(   
+   
+    'webmap_dialog_widget' => array(  
+      // Our widget will be named textf label.
+      'label' => t('Webmap Dialog Widget'),  
+      // Our widget will work with a field in DB under the name textf.
+      'field types' => array('webmap'),  
+    ),
+  ); 
+}
+
+/**
+ * HOOK_field_widget_form
+ * 
+ * Renders the form that the publisher/author sees
+ */
+
+function webmap_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $value = isset($items[$delta]['ags_groupid']) ? $items[$delta]['ags_groupid'] : '';
+  $widget = $instance['widget'];
+  $settings = $widget['settings'];
+
+  //$process = array_merge($fieldset_info['#process'], array('poutine_maker_ignore_parent'));
+  $widget = $element;
+  $widget['#delta'] = $delta;
+  $rand = rand();
+  $widget += array (
+    '#type' => 'fieldset',
+    '#title' => t('ArcGIS Webmap ID'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,  
+   
+    //'#process' => $process
+  );
+  switch ($instance['widget']['type']) {
+
+    case 'webmap_dialog_widget':
+    
+      $html_frag_url = $GLOBALS['base_url'].'/'. drupal_get_path('module', 'webmap') . '/../common/group_search_fragment.html';
+      //$html_frag_url = str_replace('//', '/', $html_frag_url);
+      $widget['dialog_widget']= array(
+        '#prefix' => '<div class="arcgis-webmap-dialog">' .
+                '<a href="javascript:void(0)" onclick="initSearchGroup(\''.$field['settings']['ags_url'].'\', this, true);return false;">' .
+                'Search in '.$field['settings']['ags_url'].'</a>'.
+        		'</div>',
+        '#attributes' => array('class' => array('arcgis-group-dialog')),
+        '#attached' => array(
+           'js' => array(
+              'var dojoConfig = { async: true, isDebug: true };' => array( 'type' => 'inline'),
+              'http://serverapi.arcgisonline.com/jsapi/arcgis/3.3',
+              drupal_get_path('module', 'webmap') . '/../common/js/arcgisSearch.js',
+              'var agsGidHtmlFrag = "'.$html_frag_url.'"' => array( 'type' => 'inline')),
+              
+           'css' => array(
+             //'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dojo/dojo/resources/dojo.css'=> array('group' => CSS_THEME, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dgrid/css/dgrid.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dgrid/css/skins/claro.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'),
+             'http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/esri/css/esri.css'=> array('group' => CSS_DEFAULT, 'type' => 'external'), 
+             $GLOBALS['base_url'].'/'. drupal_get_path('module', 'webmap') .'/../common/css/agsSearch.css' => array('group' => CSS_DEFAULT, 'type' => 'external')
+           )
+        ),
+        //'#markup' => '<input type="button" value=="Search For Group"></input>',
+      );
+      //break
+    case 'webmap_text_widget':
+      $widget['ags_webmapid'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Webmap ID') ,
+        '#default_value' => isset($items[$delta]['ags_webmapid']) ? $items[$delta]['ags_webmapid'] : '',
+        '#delta' => $delta, 
+        // Allow a slightly larger size that the field length to allow for some
+        // configurations where all characters won't fit in input field.
+        '#size' => 64,
+        '#description' => 'Add the webmap id here or search and click on the webmap using the link above.',
+        '#maxlength' => 64,
+      );
+      $widget['ags_token'] = array(
+        '#type' => 'hidden',
+        '#title' => t('Token'),
+        '#default_value' => isset($items[$delta]['ags_token']) ? $items[$delta]['ags_token'] : '',
+        '#delta' => $delta, 
+        // Allow a slightly larger size that the field length to allow for some
+        // configurations where all characters won't fit in input field.
+        '#size' => 128,
+        '#maxlength' => 256,
+      );
+  
+      break;
+
+   
+
+  }
+  
+  return $widget;
+}
+
+
+/**
+ * Utility method to recusively search an array
+ */
+function webmap_recursive_array_search($needle,$haystack) {
+    foreach($haystack as $key=>$value) {
+        $current_key=$key;
+        if($needle===$value OR (is_array($value) && webmap_recursive_array_search($needle,$value) !== false)) {
+            return $current_key;
+        }
+    }
+    return false;
+}
+
+/**
+ * Hook. Signals drupal if field is empty.  If empty then field will
+ * not be rendered.
+ */
+function webmap_field_is_empty($item, $field) {
+
+ if(empty($item['ags_webmapid']) == TRUE) {
+ 	return TRUE;
+ }
+ return FALSE;
+}

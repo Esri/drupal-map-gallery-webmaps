@@ -1,0 +1,17 @@
+<div data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="design:'headline',gutters:false"
+    style="width:100%;height:100%;margin:0;" class="esriAgsSearchDialog">
+      <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'top'">
+        <h1><span id="agsGidFinderHeader">Group ID Finder</span></h1>
+        <span style="visibility: hidden; display: none;">
+          <!--  TODO -->
+          <a id="signIn" disabled='disabled'>Sign In</a>
+        </span>
+        <p>Find group ids based on search term. Sign-in to search for private groups.</p>
+        <input name="groupFinder"  class="form-text" id="groupFinder" placeholder="search text" value="esri" size="30" />
+        <a name="groupFinderSubmit" class="button" disabled='disabled'  id="groupFinderSubmit">Submit</a>
+      </div>
+      <div id='gridpane' data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'">
+        <div id='grid'></div>
+        <div id="groupResults"></div>
+      </div>
+</div>

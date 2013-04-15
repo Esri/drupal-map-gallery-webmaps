@@ -1,0 +1,97 @@
+      #header {
+      margin:0;
+      }
+
+      #title {
+      white-space: nowrap;  
+      overflow: hidden;  
+      text-overflow: ellipsis;
+      -o-text-overflow:ellipsis;
+      }
+      .esriRtl #title{
+        text-align: right;
+        padding-right: 10px;
+      }
+      #subtitle {
+      white-space: nowrap;  
+      overflow: hidden;  
+      text-overflow: ellipsis;
+      -o-text-overflow:ellipsis;
+      }
+     .esriRtl #subtitle{
+        padding-right:10px;
+     }
+      #rightPane {
+      width:20%;
+      }
+
+      #leftPane {
+      width:20%;
+      }
+
+
+      #leftPaneContent {
+      height:100%;
+      width:100%;
+      margin:0;
+      padding:0;
+      }
+
+      #leftPaneHeader {
+      margin:0;
+      }
+
+
+      #leftPaneBody {
+      margin:0;
+      }
+
+      #leftPaneBody .panel_content {
+      padding:10px;
+      }
+
+      #tabLink {
+      text-decoration:none;
+      color:#3f3f3f;
+      }
+
+      #map {
+      padding:0;
+      margin:0;
+      }
+
+      #footer {
+      margin:0;
+      }
+      .esriScalebar{
+      padding-left:15px;
+      }
+      .map .bingLogo-lg{
+      left:18px !important;
+      }
+      
+      .arcgis_map table, .arcgis_map tbody {
+        border: 0px;
+      } 
+      
+      .arcgis_map table {
+        border: 0px;
+      }
+      
+      .arcgis_map header {
+        color: none;
+      }
+      table td, table th {
+       border: 0 none;
+       color: #000000;
+       padding: 1px;
+       vertical-align: middle;
+     }
+     
+     leftPaneContent 
+     {
+         background-color: Gray;
+     }
+         
+
+      

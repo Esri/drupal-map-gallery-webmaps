@@ -1,0 +1,29 @@
+/*-------------------------------------------------- */
+/* CUSTOM THEME */
+/*-------------------------------------------------- */
+.custom {
+	display:block;
+}
+.custom .mapHeader, .custom h2, .custom h2 a, .custom a, .custom h3, .custom h3 a {
+}
+.custom #header {
+	display: block;
+}
+.custom .mapButton  {
+}
+.custom .mapButton:hover, .custom .buttonSelected, .custom .buttonSelected:hover, .custom .mapButton:focus, .custom .buttonSelected:focus {
+}
+.custom .autoComplete li:hover, .custom .autoComplete li:focus {
+}
+.esriPopup.custom .titlePane {
+}
+.dj_ie7 .esriPopup.custom .titlePane, .dj_ie7 .esriPopup.custom .titlePane .title {
+}
+.esriPopup.custom .titlePane {
+}
+.esriPopup.custom a {
+}
+.esriPopup.custom .contentPane, .esriPopup.custom .actionsPane {
+}
+.esriPopup.custom .contentPane, .esriPopup.custom .actionsPane {
+}

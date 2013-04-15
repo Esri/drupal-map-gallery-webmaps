@@ -1,0 +1,35 @@
+.esriWebMapTitleBar {
+  background-color: #333333;
+  color: #ECF1E3;
+  height: 20px;
+  padding: 7px 3px 15px 10px;
+  text-align: left;
+}
+
+.esriWebMapLegend {
+  width:25%;	
+  height: 500px;
+  overflow: auto;
+  float: left;
+}
+.esriWebMapField {
+  width: 75%;
+  height: 500px;
+  float: right;
+
+}
+
+.esriWebMap table td, .esriWebMap table th , .esriWebMap table tbody{
+       border: 0 none;
+       color: #000000;
+       padding: 1px;
+       vertical-align: middle;
+}
+
+.esriWebMap .esriLargeSliderVertical {
+  width: 30px;	
+}
+
+.esriWebMap {
+  border: 1px solid #000000;	
+}

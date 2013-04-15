@@ -1,0 +1,22 @@
+<?php
+
+/**
+database schema
+
+**/
+function webmap_field_schema($field) {
+  
+  $columns = array(
+    'ags_webmapid' => array('type' => 'varchar', 'length' => 64, 'not null' => FALSE),
+    'ags_token' => array('type' => 'varchar', 'length' => 256, 'not null' => FALSE)
+  );
+  $indexes = array(
+    'ags_webmapid' => array('ags_webmapid'),
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes,
+  );
+  
+  
+}

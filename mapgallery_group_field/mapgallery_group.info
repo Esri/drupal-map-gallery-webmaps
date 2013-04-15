@@ -1,0 +1,7 @@
+name = ArcGIS Group Field
+description = Displays groups as a gallery or Carousel from ArcGIS.com, ArcGIS.com Subscriptions or ArcGIS for Portal installations. 
+package = ArcGIS Modules
+version = 7.x-1.0
+core = 7.x
+files[] = mapgallery_group.module
+files[] = mapgallery_group.install
